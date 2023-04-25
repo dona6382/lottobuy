@@ -34,6 +34,7 @@
 * 서버, 크롤링 : node.js, nest.js
 * 텔레그램 봇 : python
 * 데이터베이스 : 미정, typeOrm
+* Jest를 활용한 테스트?
 
 #
 우선 js로 만들고 type으로 변환
