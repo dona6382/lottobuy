@@ -1,0 +1,28 @@
+{
+  "name": "lottobuy",
+  "version": "1.0.0",
+  "description": "## 프로젝트 목적 * 로또 구매 프로그램",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dona6382/lottobuy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dona6382/lottobuy/issues"
+  },
+  "homepage": "https://github.com/dona6382/lottobuy#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "node-telegram-bot-api": "^0.61.0",
+    "puppeteer": "^20.9.0",
+    "puppeteer-core": "^20.9.0",
+    "yarn": "^1.22.19"
+  }
+}
