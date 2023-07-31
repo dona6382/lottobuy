@@ -2,3 +2,14 @@
 // 2. 기존 유저 확인 및 정보 들고오기
 
 // 비밀번호를 복호화해서 동행복권 사이트에 로그인 하여야 하기때문에 {양방향 암호화}
+
+const {query} = require('../../server/db/query');
+const {executeQuery} = require('../../server/db/executeQuery');
+
+
+async function dbConnectTest(){
+    const listGet = await executeQuery(query.SELECT_NOW);
+};
+
+const sd = dbConnectTest();
+console.log(sd);
