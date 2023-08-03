@@ -5,11 +5,33 @@
 
 const {query} = require('../../server/db/query');
 const {executeQuery} = require('../../server/db/executeQuery');
-
+const crypto = require('../../lib/crypto');
 
 async function dbConnectTest(){
     const listGet = await executeQuery(query.SELECT_NOW);
 };
 
-const sd = dbConnectTest();
+async function insertUser(){
+    const userId = 'testId';
+    const userPassword = 'testPw';
+    const passwordCrypto = crypto.encrypt(userPassword);
+
+    const inertUserId = await executeQuery(query.INSERT_USER_INFO, [id, passwordCrypto]);
+    //결과 전달추가
+};
+
+
+async function getUser(){
+    // const listGet = await executeQuery(query.SELECT_NOW);
+    const userInfo = await executeQuery(query.GET_USER_INFO);
+    const userId = await userInfo[0].identification;
+    const userPasswordCrypto = await userInfo[0].password;
+
+    const userPassword = crypto.decrypt(userPasswordCrypto);
+    await console.log(userId);
+    await console.log(userPasswordCrypto);
+    await console.log(userPassword);
+};
+
+const sd = getUser();
 console.log(sd);
