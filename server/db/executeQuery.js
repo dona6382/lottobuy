@@ -1,26 +1,36 @@
 const Pool = require('./dbConnection').connection
 
+
 module.exports.executeQuery = function (sql, args) {
 
     var pool = Pool;
 
     return new Promise((resolve, reject) => {
-
-        try{
+        try {
             pool.getConnection(function(err, connection) {
-                connection.query(sql, args, (error, rows) =>{
+                if (err) {
+                    reject(err);
+                    return;
+                }
 
-                    if(error) {
-                        throw error;
+                connection.query(sql, args, (error, rows) => {
+                    connection.release();
+
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(rows);
                     }
-                    else return resolve(rows);
-
-                }) //query end
-
-                connection.release();
-            }) // pool connection end
-        } catch(error){
-            // logger.error(error.stack);
+                });
+            });
+        } catch(error) {
+            reject(error);
         }
-    })
-}
+    });
+};
+
+
+
+
+
+
