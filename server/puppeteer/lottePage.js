@@ -3,7 +3,10 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
+const user = require('../user/user');
+
 const {sleep} = require('../../lib/util');
+
 
 async function pageOpen(){
     await (
@@ -12,6 +15,7 @@ async function pageOpen(){
 
             const browser = await puppeteer.launch({
                 executablePath: chromiumExecutablePath,
+                // headless: false,
                 headless: false,
                 defaultViewport: {
                     width: 1280,
@@ -33,20 +37,21 @@ async function pageOpen(){
                     // await page.waitForNavigation();
 
                     // const detailPage = cheerio.load(await page.content());
+                    const userInfo = await user.getUser();
+                    const {userId} = userInfo;
+                    const {userPassword} = userInfo;
 
                     await page.click('#userId');
-                    await page.type('#userId', 'kim63826382', {delay:50});
+                    await page.type('#userId', userId, {delay:50});
                     await page.click('input[type=password]:nth-child(2)');
-                    await page.type('input[type=password]:nth-child(2)', '12ckdgnl17!', {delay:50});
+                    await page.type('input[type=password]:nth-child(2)', userPassword, {delay:50});
                     await page.click('div.form > a');
                     await page.waitForNavigation();
 
                     await sleep(2);
 
                     await page.goto('https://ol.dhlottery.co.kr/olotto/game/game645.do');  // 나눔 로또 direct Page
-                    // await page.waitForNavigation();
 
-                    const sdsd = await page.content();
                     const detailPage = cheerio.load(await page.content());
 
 
@@ -59,10 +64,10 @@ async function pageOpen(){
 
                         const optionValue = 'option:nth-child(5)';
 
-                        //TODO 옵션 수량 확인
                         await page.select('select#amoundApply', optionValue);
                         console.log(`옵션 ${optionValue}가 선택되었습니다.`);
 
+                        //TODO 옵션 수량 확인
                         await page.click('#amoundApply > option:nth-child(5)')  // 적용수량 설정
                         await page.click('#btnSelectNum');                      // 확인
                         await page.click('#btnBuy');                            // 구매하기
@@ -93,9 +98,10 @@ async function pageOpen(){
 
 const main = async () =>{
     const getOpenPage = pageOpen();
-
 }
 
 
 
-main();
+// main();
+
+module.exports = {pageOpen};

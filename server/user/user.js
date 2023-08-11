@@ -12,26 +12,39 @@ async function dbConnectTest(){
 };
 
 async function insertUser(){
-    const userId = 'testId';
-    const userPassword = 'testPw';
-    const passwordCrypto = crypto.encrypt(userPassword);
+    try {
+        const userId = 'testId';
+        const userPassword = 'testPw';
+        const passwordCrypto = crypto.encrypt(userPassword);
 
-    const inertUserId = await executeQuery(query.INSERT_USER_INFO, [id, passwordCrypto]);
-    //결과 전달추가
-};
+        await executeQuery(query.INSERT_USER_INFO, [userId, passwordCrypto]);
+
+        console.log('User inserted successfully');
+    } catch (error) {
+        console.error('Error in insertUser:', error);
+    }
+}
 
 
 async function getUser(){
-    // const listGet = await executeQuery(query.SELECT_NOW);
-    const userInfo = await executeQuery(query.GET_USER_INFO);
-    const userId = await userInfo[0].identification;
-    const userPasswordCrypto = await userInfo[0].password;
+    try {
+        const userInfo = await executeQuery(query.GET_USER_INFO);
+        const userId = userInfo[0].identification;
+        const userPasswordCrypto = userInfo[0].password;
 
-    const userPassword = crypto.decrypt(userPasswordCrypto);
-    await console.log(userId);
-    await console.log(userPasswordCrypto);
-    await console.log(userPassword);
-};
+        const userPassword = crypto.decrypt(userPasswordCrypto);
+        return {
+            userId,
+            userPassword
+        };
+    } catch (error) {
+        console.error("Error in getUser:", error);
+        throw error; // 에러를 상위로 전파하여 처리할 수 있도록 합니다.
+    }
+}
 
-const sd = getUser();
-console.log(sd);
+
+// const sd = getUser();
+// console.log(sd);
+
+module.exports = {insertUser, getUser};
