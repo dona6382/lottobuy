@@ -8,7 +8,7 @@ const user = require('../user/user');
 const {sleep} = require('../../lib/util');
 
 
-async function pageOpen(){
+async function pageOpen(userId, extractNumber){
     await (
         async () => {
             let chromiumExecutablePath = puppeteer.executablePath();
@@ -37,7 +37,7 @@ async function pageOpen(){
 
 
 
-                    const userInfo = await user.getUser();
+                    const userInfo = await user.getUser(userId);
                     const {userId} = userInfo;
                     const {userPassword} = userInfo;
 
@@ -57,11 +57,8 @@ async function pageOpen(){
 
                     await page.click('ul#tabWay2Buy > li > a#num2')         // num2 == 자동구매
 
-
-                    // const selectElement = await page.$('select#amoundApply');
-                    //TODO 입력받은 수량 만큼 values 변경 가능
-                    const selectElement = await page.select('select#amoundApply', '5');
-
+                    const buyAmount = extractNumber + '';
+                    const selectElement = await page.select('select#amoundApply', buyAmount);
 
                     if(selectElement){
                         await page.click('#btnSelectNum');                      // 확인
@@ -75,11 +72,9 @@ async function pageOpen(){
                         const notiMessage = await detailPage('#popupLayerAlert > div > div.noti > span').text();
 
                     }
-
                 } catch (e) {
                     console.log('페이지 로딩 실패')
                 }
-
             } catch (error) {
                 console.error('오류 발생:', error);
             } finally {
@@ -96,6 +91,6 @@ const main = async () =>{
 
 
 
-main();
+// main();
 
 module.exports = {pageOpen};
