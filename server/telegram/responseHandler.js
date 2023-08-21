@@ -6,6 +6,9 @@ const lottoPage = require('../puppeteer/lottePage');
 async function handleMessage(text) {
     let sendMessage = '';
 
+    //TODO 기능 추가
+    // 잔액조회, 당첨결과 확인, 이번주 선택한 목록 보기 등
+
     if(text === COMMANDS.HELP){
         sendMessage = '/help \n도움메시지\n' +
             '/buy 구매방법 아이디 구매수량(max 5) \n해당 아이디에 구매\n' +
@@ -27,6 +30,7 @@ async function handleMessage(text) {
         sendMessage = '일치하는 명령어가 없습니다. \n /help 명령어를 입력해 보세요';
     }
     if(sendMessage !== ''){
+        const botResponse = require("./botResponse");
         await botResponse.sendResponse(sendMessage);
     }
 }
