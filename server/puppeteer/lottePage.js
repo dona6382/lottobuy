@@ -1,14 +1,15 @@
 //https://dhlottery.co.kr/common.do?method=main
 
 const puppeteer = require('puppeteer');
-const cheerio = require('cheerio');
-
-const user = require('../user/user');
+const {BUYMODE, COMMANDS} = require("../commandVariable");
+const {autoBuyMode, manualBuyMode} = require('./lottoPageToBuy');
 
 const {sleep} = require('../../lib/util');
 
 
-async function pageOpen(userId, extractNumber){
+async function pageOpen(getUserInfo, extractNumber, buyMode){
+    let resultMessage = '';
+
     await (
         async () => {
             let chromiumExecutablePath = puppeteer.executablePath();
@@ -32,65 +33,39 @@ async function pageOpen(userId, extractNumber){
             try {
                 const page = await browser.newPage();
 
-                try {
-                    await page.goto('https://dhlottery.co.kr/user.do?method=login&returnUrl=');   // 로그인 페이지
+                await page.goto('https://dhlottery.co.kr/user.do?method=login&returnUrl=');   // 로그인 페이지
 
+                const {userId} = getUserInfo;
+                const {userPassword} = getUserInfo;
 
+                await page.click('#userId');
+                await page.type('#userId', userId, {delay:50});
+                await page.click('input[type=password]:nth-child(2)');
+                await page.type('input[type=password]:nth-child(2)', userPassword, {delay:50});
+                await page.click('div.form > a');
+                await page.waitForNavigation();
 
-                    const userInfo = await user.getUser(userId);
-                    const {userId} = userInfo;
-                    const {userPassword} = userInfo;
+                await sleep(2);
 
-                    await page.click('#userId');
-                    await page.type('#userId', userId, {delay:50});
-                    await page.click('input[type=password]:nth-child(2)');
-                    await page.type('input[type=password]:nth-child(2)', userPassword, {delay:50});
-                    await page.click('div.form > a');
-                    await page.waitForNavigation();
+                await page.goto('https://ol.dhlottery.co.kr/olotto/game/game645.do');  // 나눔 로또 direct Page
 
-                    await sleep(2);
-
-                    await page.goto('https://ol.dhlottery.co.kr/olotto/game/game645.do');  // 나눔 로또 direct Page
-
-                    const detailPage = cheerio.load(await page.content());
-
-
-                    await page.click('ul#tabWay2Buy > li > a#num2')         // num2 == 자동구매
-
-                    const buyAmount = extractNumber + '';
-                    const selectElement = await page.select('select#amoundApply', buyAmount);
-
-                    if(selectElement){
-                        await page.click('#btnSelectNum');                      // 확인
-                        await page.click('#btnBuy');                            // 구매하기
-
-                        await sleep(2);
-
-                        await page.click('#popupLayerConfirm > div > div.btns > input:nth-child(1)');   // 팝업 구매버튼
-
-                        const detailPage = cheerio.load(await page.content());
-                        const notiMessage = await detailPage('#popupLayerAlert > div > div.noti > span').text();
-
-                    }
-                } catch (e) {
-                    console.log('페이지 로딩 실패')
+                if(buyMode === BUYMODE.AUTO){
+                    resultMessage = await autoBuyMode(page, extractNumber);
+                }else if(buyMode === BUYMODE.MANUAL){
+                    resultMessage = await manualBuyMode(page, extractNumber);
                 }
             } catch (error) {
-                console.error('오류 발생:', error);
+                console.error('페이지 오류 발생:', error);
             } finally {
                 // 브라우저를 종료합니다.
                 await browser.close();
             }
         }
     )();
-}
-
-const main = async () =>{
-    const getOpenPage = pageOpen();
+    return resultMessage;
 }
 
 
 
-// main();
 
 module.exports = {pageOpen};

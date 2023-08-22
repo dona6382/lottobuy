@@ -1,4 +1,4 @@
-const {BUYMODE, COMMANDS} = require("./commandVariable");
+const {BUYMODE, COMMANDS} = require("../commandVariable");
 const {getUser, insertUser} = require("../user/user");
 const lottoPage = require('../puppeteer/lottePage');
 
@@ -64,7 +64,9 @@ async function lottoBuyFlow(extractBuyList) {
             } else {
                 console.log(`${buyAmount}개 구매요청`);
                 // TODO
-                // await lottoPage.pageOpen(uesrId, extractNumber);
+                const resultMessage =  await lottoPage.pageOpen(getUserInfo, buyAmount, BUYMODE.AUTO);
+
+                await sendErrorMessage(resultMessage);
                 await sendErrorMessage('[END] buy flow');
             }
             break;

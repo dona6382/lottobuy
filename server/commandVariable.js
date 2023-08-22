@@ -7,6 +7,7 @@ const COMMANDS = {
 };
 
 const BUYMODE = {
+    MANUAL: 'manual',
     AUTO: 'auto',
 };
 
