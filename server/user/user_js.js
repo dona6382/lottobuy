@@ -1,7 +1,8 @@
 
-const {query} = require('../../server/db/query');
-const {executeQuery} = require('../../server/db/executeQuery');
+const {query} = require('../db/query');
+const {executeQuery} = require('../db/executeQuery');
 const crypto = require('../../lib/crypto');
+
 
 
 async function insertUser(userId, userPw){
@@ -36,5 +37,7 @@ async function getUser(userId){
         console.error("Error in getUser:", error);
     }
 }
+
+getUser(kim63826382);
 
 module.exports = {insertUser, getUser};
