@@ -1,16 +1,12 @@
-
-const COMMANDS = {
+export const COMMANDS = {
     HELLO: 'hello',
     BUY: 'buy',
     HELP: 'help',
     NEW_USER: 'new',
-};
+} as const;
 
-const BUYMODE = {
+export const BUYMODE = {
     MANUAL: 'manual',
     AUTO: 'auto',
-};
-
-
-module.exports = {COMMANDS, BUYMODE};
+} as const;
 

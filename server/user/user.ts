@@ -11,6 +11,7 @@ async function insertUser(userId: string, userPw: string): Promise<void> {
         console.log('User inserted successfully');
     } catch (error) {
         console.error('Error in insertUser:', error);
+        throw error;
     }
 }
 
@@ -31,9 +32,8 @@ async function getUser(userId: string): Promise<{ userId: string; userPassword?:
         }
     } catch (error) {
         console.error('Error in getUser:', error);
+        throw error;
     }
 }
-
-getUser('kim63826382');
 
 export { insertUser, getUser };
