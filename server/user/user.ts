@@ -15,7 +15,7 @@ async function insertUser(userId: string, userPw: string): Promise<void> {
     }
 }
 
-async function getUser(userId: string): Promise<{ userId: string; userPassword?: string }> {
+async function getUser(userId: string): Promise<{ userId: string; userPassword?: string | undefined}> {
     try {
         const userInfo = await executeQuery(query.GET_USER_INFO, [userId]);
         if (userInfo.length !== 0) {

@@ -30,7 +30,7 @@ async function handleMessage(text: string): Promise<void> {
         sendMessage = '일치하는 명령어가 없습니다. \n /help 명령어를 입력해 보세요';
     }
     if (sendMessage !== '') {
-        await sendResponse(sendMessage);
+        await sendResponse(null, sendMessage);
     }
 }
 
@@ -41,7 +41,7 @@ async function lottoBuyFlow(extractBuyList: string[]): Promise<void> {
     const buyAmountType = parseInt(buyAmount);
 
     async function sendErrorMessage(errorMessage: string): Promise<void> {
-        await sendResponse(errorMessage);
+        await sendResponse(null, errorMessage);
     }
 
     switch (buyRequest) {
@@ -81,7 +81,7 @@ async function extractBuySplit(text: string): Promise<string[] | undefined> {
         return textSplitResult;
     } else {
         const unValidMessage = '/buy mode id number(max <= 5) 형식에 맞춰주세요';
-        await sendResponse(unValidMessage);
+        await sendResponse(null, unValidMessage);
     }
 }
 
@@ -92,7 +92,7 @@ async function extractNewUserSplit(text: string): Promise<string[] | undefined> 
         return textSplitResult;
     } else {
         const unValidMessage = '/new id pw 형식에 맞춰주세요';
-        await sendResponse(unValidMessage);
+        await sendResponse(null, unValidMessage);
     }
 }
 
