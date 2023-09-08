@@ -4,7 +4,7 @@ import {pageOpen} from '../puppeteer/lottePage';
 
 import { sendResponse } from "./botResponse";
 
-async function handleMessage(text: string): Promise<void> {
+async function handleMessage(chatId: number, text: string): Promise<void> {
     let sendMessage = '';
 
     // TODO: 기능 추가
@@ -30,7 +30,7 @@ async function handleMessage(text: string): Promise<void> {
         sendMessage = '일치하는 명령어가 없습니다. \n /help 명령어를 입력해 보세요';
     }
     if (sendMessage !== '') {
-        await sendResponse(null, sendMessage);
+        await sendResponse(chatId, sendMessage);
     }
 }
 

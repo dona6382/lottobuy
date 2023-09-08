@@ -18,7 +18,7 @@ bot.on('message', async (msg) => {
 
     if (slashContain === '/') {
         const commandMessage = text.slice(1);
-        await handleMessage(commandMessage);
+        await handleMessage(chatId, commandMessage);
     } else {
         const slashNotContain = '명령어는 항상 슬래시 (/)로 시작해야 합니다. /help 명령어를 입력해 보세요.';
         await sendResponse(chatId, slashNotContain);
