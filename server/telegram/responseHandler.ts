@@ -15,13 +15,13 @@ async function handleMessage(chatId: number, text: string): Promise<void> {
             '/buy 구매방법 아이디 구매수량(max 5) \n해당 아이디에 구매\n' +
             '/new 아이디 비밀번호 \n신규 계정 추가\n';
     } else if (text.includes(COMMANDS.BUY)) {
-        const extractBuyList = await extractBuySplit(text);
+        const extractBuyList = await extractBuySplit(chatId, text);
 
         if (extractBuyList) {
-            await lottoBuyFlow(extractBuyList);
+            await lottoBuyFlow(chatId, extractBuyList);
         }
     } else if (text.includes(COMMANDS.NEW_USER)) {
-        const extractNewUserList = await extractNewUserSplit(text);
+        const extractNewUserList = await extractNewUserSplit(chatId, text);
 
         if (extractNewUserList) {
             await insertUserFlow(extractNewUserList);
@@ -34,14 +34,14 @@ async function handleMessage(chatId: number, text: string): Promise<void> {
     }
 }
 
-async function lottoBuyFlow(extractBuyList: string[]): Promise<void> {
+async function lottoBuyFlow(chatId: number, extractBuyList: string[]): Promise<void> {
     const buyRequest = extractBuyList[1];
     const userId = extractBuyList[2];
     const buyAmount = extractBuyList[3];
     const buyAmountType = parseInt(buyAmount);
 
     async function sendErrorMessage(errorMessage: string): Promise<void> {
-        await sendResponse(null, errorMessage);
+        await sendResponse(chatId, errorMessage);
     }
 
     switch (buyRequest) {
@@ -74,25 +74,25 @@ async function lottoBuyFlow(extractBuyList: string[]): Promise<void> {
     }
 }
 
-async function extractBuySplit(text: string): Promise<string[] | undefined> {
+async function extractBuySplit(chatId:number, text: string): Promise<string[] | undefined> {
     const textSplitResult = textSplit(text);
 
     if (textSplitResult.length === 4) {
         return textSplitResult;
     } else {
         const unValidMessage = '/buy mode id number(max <= 5) 형식에 맞춰주세요';
-        await sendResponse(null, unValidMessage);
+        await sendResponse(chatId, unValidMessage);
     }
 }
 
-async function extractNewUserSplit(text: string): Promise<string[] | undefined> {
+async function extractNewUserSplit(chatId: number, text: string): Promise<string[] | undefined> {
     const textSplitResult = textSplit(text);
 
     if (textSplitResult.length === 3) {
         return textSplitResult;
     } else {
         const unValidMessage = '/new id pw 형식에 맞춰주세요';
-        await sendResponse(null, unValidMessage);
+        await sendResponse(chatId, unValidMessage);
     }
 }
 

@@ -17,10 +17,18 @@ async function autoBuyMode(page: Page, extractNumber: string): Promise<string> {
         await page.click('#popupLayerConfirm > div > div.btns > input:nth-child(1)'); // 팝업 구매버튼
 
         const detailPage = cheerio.load(await page.content());
-        const notiMessage = detailPage('#popupLayerAlert > div > div.noti > span').text();
+        let notiMessage = detailPage('#popupLayerAlert > div > div.noti > span').text();
+
+        if(!notiMessage || notiMessage.length === 0){    // 구매제한 추가
+            notiMessage = detailPage('div.box > div.head').text();
+            if(notiMessage.includes('구매한도')){
+                notiMessage = '구매한도 초과'
+            }
+        }else{
+            notiMessage = '구매완료';
+        }
         return notiMessage;
     }
-
     return ''; // selectElement가 없을 경우 빈 문자열 반환
 }
 
