@@ -3,6 +3,7 @@ import { getUser, insertUser } from "../user/user";
 import {pageOpen} from '../puppeteer/lottePage';
 
 import { sendResponse } from "./botResponse";
+import {viewBuyList} from "../handle/viewHandle";
 
 async function handleMessage(chatId: number, text: string): Promise<void> {
     let sendMessage = '';
@@ -25,6 +26,12 @@ async function handleMessage(chatId: number, text: string): Promise<void> {
 
         if (extractNewUserList) {
             await insertUserFlow(extractNewUserList);
+        }
+    } else if (text.includes(COMMANDS.VIEW)) {
+        const extractNewUserList = await extractNewUserSplit(chatId, text);
+
+        if (extractNewUserList) {
+            await viewBuyList(extractNewUserList);
         }
     } else {
         sendMessage = '일치하는 명령어가 없습니다. \n /help 명령어를 입력해 보세요';

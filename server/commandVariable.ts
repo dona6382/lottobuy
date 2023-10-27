@@ -3,6 +3,7 @@ export const COMMANDS = {
     BUY: 'buy',
     HELP: 'help',
     NEW_USER: 'new',
+    VIEW: 'view'
 } as const;
 
 export const BUYMODE = {
