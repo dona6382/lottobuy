@@ -7,4 +7,11 @@ function sleep(sec: number): Promise<void> {
     });
 }
 
-export { sleep };
+
+function textSplit(text: string): string[] {
+    const outPutText = text.split(' ');
+
+    return outPutText;
+}
+
+export { sleep, textSplit };

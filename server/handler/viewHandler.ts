@@ -1,5 +1,6 @@
 import {getUser, insertUser} from "../user/user";
 
+import {textSplit} from "../../lib/util";
 
 async function viewBuyList(extractNewUserList: string[]): Promise<void> {
     const userId = extractNewUserList[1];

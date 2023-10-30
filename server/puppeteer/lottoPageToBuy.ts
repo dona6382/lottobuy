@@ -24,6 +24,7 @@ async function autoBuyMode(page: Page, extractNumber: string): Promise<string> {
             if(notiMessage.includes('구매한도')){
                 notiMessage = '구매한도 초과'
             }
+            // 구매한도 초과로 나오는데 구매됨
         }else{
             notiMessage = '구매완료';
         }
