@@ -1,15 +1,12 @@
 import { BUYMODE, COMMANDS } from "../commandVariable";
 
 import { sendResponse } from "./botResponse";
-import {viewBuyList} from "../handler/viewHandler";
+import {viewFlow, extractViewSplit} from "../handler/viewHandler";
 import {lottoBuyFlow, extractBuySplit} from "../handler/buyHandler";
 import {insertUserFlow, extractNewUserSplit} from "../handler/insertUserHandler";
 
 async function handleMessage(chatId: number, text: string): Promise<void> {
     let sendMessage = '';
-
-    // TODO: 기능 추가
-    // 잔액 조회, 당첨 결과 확인, 이번주 선택한 목록 보기 등
 
     if (text === COMMANDS.HELP) {
         sendMessage = '/help \n도움 메시지\n' +
@@ -27,11 +24,11 @@ async function handleMessage(chatId: number, text: string): Promise<void> {
         if (extractNewUserList) {
             await insertUserFlow(extractNewUserList);
         }
-    } else if (text.includes(COMMANDS.VIEW)) {
-        const extractNewUserList = await extractNewUserSplit(chatId, text);
+    } else if (text.includes(COMMANDS.VIEW)) {  // 각종 조회 (잔액, 당첨 결과 확인, 이번주 선택한 목록)
+        const extractViewList = await extractViewSplit(chatId, text);
 
-        if (extractNewUserList) {
-            await viewBuyList(extractNewUserList);
+        if (extractViewList) {
+            await viewFlow(chatId, extractViewList);
         }
     } else {
         sendMessage = '일치하는 명령어가 없습니다. \n /help 명령어를 입력해 보세요';

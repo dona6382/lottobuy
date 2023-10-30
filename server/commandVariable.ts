@@ -11,3 +11,8 @@ export const BUYMODE = {
     AUTO: 'auto',
 } as const;
 
+export const VIEWMODE = {
+    BALANCE: 'balance', // 잔액
+    RESULT: 'result',   // 당첨 결과
+    LIST: 'list',       // 이번주 선택한 목록
+} as const;
