@@ -1,7 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { handleMessage } from './responseHandler';
+import fs from "fs";
+import * as ini from 'ini';
 
-const token = process.env.TELEGRAM_BOT_TOKEN || '6217714890:AAHMlqq4lYAn76us-Lwl6R4xvFVsZdEVmTU';
+const configFilePath = '../../config.ini';
+const config = ini.parse(fs.readFileSync(configFilePath, 'utf-8'));
+
+// const token = process.env.TELEGRAM_BOT_TOKEN || '6217714890:AAHMlqq4lYAn76us-Lwl6R4xvFVsZdEVmTU';
+const token = config.TELEGRAM.TELEGRAM_BOT_TOKEN;
 
 const bot = new TelegramBot(token, { polling: true });
 
