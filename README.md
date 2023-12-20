@@ -26,28 +26,16 @@
 * js 파일 Line 수가 150을 안넘도록
 * 등등..
 
-## Setting Prettier
-* install 이후에 IDE 에 prettier 설정을 해야 정상 작동합니다.
-* Intellj 기준으로 설명합니다.
-    * file > settings > Languages & Frameworks > Prettier 메뉴 접속
-    * 'Prettier Package'(2번째 input)에는 node_modules 에 설치되어 있는 prettier  경로를 설정합니다.
-        * 보통 '~\IdeaProjects\funds_project\node_modules\prettier' 로 설정하면 됨
-    * 아래 On code reformat, On Save 체크 후 IDE 재시작
-    * 이후 코드 수정 후 ctrl + s (Mac 은 cmd + s)를 하면 prettier 적용됩니다.
-* Prettier 관련 설정은 .prettierrc 를 수정하시면 됩니다.
-
 ## Tech stack
 * nodejs (18+) & TypeScript (^4.9.5)
 * 퍼펫티어
-* 서버, 크롤링 : node.js, nest.js
-* 텔레그램 봇 : python
-* 데이터베이스 : 미정, typeOrm
-* Jest를 활용한 테스트?
+* 서버, 크롤링 : node.js
 
-#
-우선 js로 기본틀 생성 -> type으로 변환 -> Nest.JS변환
-- 마이그레이션 작업도 같이하고 싶어서
 
-# 질문
-만약 구매 프로세스가 진행중인데 또 구매 요청이 온다면 어떻게 동작할까?
-- 메시지큐에 넣어볼까?
+## TODO SKILL
+* redis 추가
+* MessageQueue 추가
+
+## TODO Function
+* 결제 수동추가
+* 각종 조회 추가
