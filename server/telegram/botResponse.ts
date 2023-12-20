@@ -10,7 +10,6 @@ bot.on('message', async (msg) => {
     const text = msg.text;
 
     if (!text) {
-        // Handle the case where msg.text is undefined or falsy
         return;
     }
 
@@ -34,5 +33,7 @@ async function sendResponse(chatId: number| null, sendMessage: string) {
         console.error(`Error sending message: ${error.message}`);
     }
 }
+
+console.log('서비스 실행');
 
 export { sendResponse };

@@ -15,8 +15,7 @@ async function extractNewUserSplit(chatId: number, text: string): Promise<string
     }
 }
 
-
-async function insertUserFlow(extractNewUserList: string[]): Promise<void> {
+async function insertUserFlow(chatId: number, extractNewUserList: string[]): Promise<void> {
     const userId = extractNewUserList[1];
     const userPw = extractNewUserList[2];
 
@@ -24,16 +23,12 @@ async function insertUserFlow(extractNewUserList: string[]): Promise<void> {
     const getUserPw = getUserInfo.userPassword;
 
     if (!getUserPw) {
-        // DB에 없는 경우 추가
         const insertUserResult = await insertUser(userId, userPw);
-        console.log(`${userId} 계정 추가 완료`);
+        await sendResponse(chatId, '계정 추가 성공');
     } else {
-        console.log(`${userId} 이미 등록된 계정입니다.`);
+        await sendResponse(chatId, `이미 등록된 계정입니다.`);
     }
 }
-
-
-
 
 
 export {insertUserFlow, extractNewUserSplit};

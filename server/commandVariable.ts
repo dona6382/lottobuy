@@ -2,7 +2,7 @@ export const COMMANDS = {
     HELLO: 'hello',
     BUY: 'buy',
     HELP: 'help',
-    NEW_USER: 'new',
+    NEW: 'new',
     VIEW: 'view'
 } as const;
 

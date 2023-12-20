@@ -20,7 +20,7 @@ async function extractViewSplit(chatId:number, text: string): Promise<string[] |
 async function viewFlow(chatId: number, extractViewList: string[]): Promise<void> {
     const viewRequest = extractViewList[1];
 
-    const userId = extractViewList[1];
+    const userId = extractViewList[2];
 
     const getUserInfo = await getUser(userId);
     const getUserPw = getUserInfo.userPassword;
