@@ -41,9 +41,7 @@ async function lottoBuyFlow(chatId: number, extractBuyList: string[]): Promise<v
             } else if (buyAmountType > 5) {
                 await sendErrorMessage('[BUY AMOUNT ERROR] 구매 요청 수량이 5보다 큽니다.');
             } else {
-                console.log(`${buyAmount}개 구매요청`);
-                // TODO
-                const resultMessage = await pageOpen(getUserInfo, buyAmount, BUYMODE.AUTO);
+                const resultMessage = await pageOpen(getUserInfo, buyAmount, "buy", BUYMODE.AUTO);
 
                 await sendErrorMessage(resultMessage);
                 await sendErrorMessage('[END] buy flow');

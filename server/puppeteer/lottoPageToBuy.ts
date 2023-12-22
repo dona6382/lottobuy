@@ -21,12 +21,13 @@ async function autoBuyMode(page: Page, extractNumber: string): Promise<string> {
 
         if(!notiMessage || notiMessage.length === 0){    // 구매제한 추가
             notiMessage = detailPage('div.box > div.head').text();
-            if(notiMessage.includes('구매한도')){
-                notiMessage = '구매한도 초과'
+            const buyResult = detailPage('div#popReceipt > h2').text();
+
+            if(buyResult.includes('구매내역 확인')){
+                notiMessage = '구매완료';
+            }else{
+                notiMessage = notiMessage.includes('구매한도') ? '구매한도 초과' : notiMessage;
             }
-            // 구매한도 초과로 나오는데 구매됨
-        }else{
-            notiMessage = '구매완료';
         }
         return notiMessage;
     }
