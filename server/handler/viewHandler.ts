@@ -1,9 +1,10 @@
 import {getUser, insertUser} from "../user/user";
 
-import {VIEWMODE} from "../commandVariable";
+import {BUYMODE, VIEWMODE} from "../commandVariable";
 
 import {textSplit} from "../../lib/util";
 import {sendResponse} from "../telegram/botResponse";
+import {pageOpen} from "../puppeteer/lottePage";
 
 async function extractViewSplit(chatId:number, text: string): Promise<string[] | undefined> {
     const textSplitResult = textSplit(text);
@@ -23,7 +24,6 @@ async function viewFlow(chatId: number, extractViewList: string[]): Promise<void
     const userId = extractViewList[2];
 
     const getUserInfo = await getUser(userId);
-    const getUserPw = getUserInfo.userPassword;
 
     async function sendErrorMessage(errorMessage: string): Promise<void> {
         await sendResponse(chatId, errorMessage);
@@ -31,9 +31,10 @@ async function viewFlow(chatId: number, extractViewList: string[]): Promise<void
 
     switch (viewRequest){
         case VIEWMODE.BALANCE:
-
+            const resultMessage = await pageOpen(getUserInfo, "0", "view", VIEWMODE.BALANCE);
+            await sendErrorMessage(resultMessage);
+            await sendErrorMessage('[END] view flow');
             break;
-
         case VIEWMODE.RESULT:
 
             break;
@@ -46,6 +47,7 @@ async function viewFlow(chatId: number, extractViewList: string[]): Promise<void
             await sendErrorMessage('[VIEW MODE ERROR] 조회 방법을 확인해주시기 바랍니다.');
             break;
     }
+
 }
 
 

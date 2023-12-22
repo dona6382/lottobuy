@@ -1,7 +1,8 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
-import { BUYMODE } from "../commandVariable";
+import {BUYMODE, VIEWMODE} from "../commandVariable";
 import { autoBuyMode, manualBuyMode } from './lottoPageToBuy';
 import { sleep } from '../../lib/util';
+import {viewBalance} from "./lottoPageToView";
 
 interface UserInfo {
     userId: string;
@@ -25,12 +26,12 @@ async function login(page: Page, getUserInfo: UserInfo): Promise<void> {
     await sleep(2);
 }
 
-async function goToLottoPage(page: Page): Promise<void> {
+async function goToLottoBuyPage(page: Page): Promise<void> {
     await page.goto('https://ol.dhlottery.co.kr/olotto/game/game645.do');
 }
 
-async function pageOpen(getUserInfo: UserInfo, extractNumber: string, buyMode: string): Promise<string> {
-    let purchaseResult = '';
+async function pageOpen(getUserInfo: UserInfo, extractNumber: string, mode:string, detailMode: string): Promise<string> {
+    let pageResult = '';
 
     const chromiumExecutablePath = puppeteer.executablePath();
     const browser: Browser = await puppeteer.launch({
@@ -48,20 +49,37 @@ async function pageOpen(getUserInfo: UserInfo, extractNumber: string, buyMode: s
     try {
         const page: Page = await browser.newPage();
         await login(page, getUserInfo);
-        await goToLottoPage(page);
 
-        if (buyMode === BUYMODE.AUTO) {
-            purchaseResult = await autoBuyMode(page, extractNumber);
-        } else if (buyMode === BUYMODE.MANUAL) {
-            // purchaseResult = await manualBuyMode(page, extractNumber);
+        switch (mode) {
+            case "buy":
+                await goToLottoBuyPage(page);
+
+                if (detailMode === BUYMODE.AUTO) {
+                    pageResult = await autoBuyMode(page, extractNumber);
+                } else if (detailMode === BUYMODE.MANUAL) {
+                    // purchaseResult = await manualBuyMode(page, extractNumber);
+                }
+                break;
+            case "view":
+                if(detailMode === VIEWMODE.BALANCE){
+                    pageResult = await viewBalance(page);
+                }else if(detailMode === VIEWMODE.LIST){
+
+                }else if(detailMode === VIEWMODE.RESULT){
+
+                }
+                break;
+            default:
+               return "존재하지않는 mode";
         }
+
     } catch (error) {
         console.error('페이지 오류 발생:', error);
     } finally {
         await browser.close();
     }
 
-    return purchaseResult;
+    return pageResult;
 }
 
 export { pageOpen };
